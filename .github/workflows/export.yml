@@ -1,0 +1,104 @@
+name: Export Game
+
+on:
+  workflow_dispatch:
+    inputs:
+      itch-upload:
+        type: boolean
+        default: true
+        description: Upload to ItchIo?
+      github-upload:
+        type: boolean
+        default: true
+        description: Upload to Github?
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: nu {0}
+
+env:
+  project-godot-root: ./.
+  itch-user: username
+  itch-game: ""
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip!')"
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hustcer/setup-nu@v3
+        with:
+          version: "*"
+          enable-plugins: true
+
+      - name: get info
+        run: |
+          let version = (open ($env.project-godot-root | path join "project.godot")
+            | lines
+            | where ($it | str starts-with 'config/version=')
+            | first
+            | split row '='
+            | get 1
+            | str trim -c '"')
+
+          $"version=($version)" | save -a $env.GITHUB_ENV
+
+      - name: export game
+        if: inputs.github-upload || inputs.itch-upload
+        id: export
+        uses: firebelley/godot-export@v7.0.0
+        with:
+          godot_executable_download_url: https://downloads.godotengine.org/?version=4.6.1&flavor=stable&slug=linux.x86_64.zip&platform=linux.64
+          godot_export_templates_download_url: https://downloads.godotengine.org/?version=4.6.1&flavor=stable&slug=export_templates.tpz&platform=templates
+          cache: true
+          relative_project_path: ${{ env.project-godot-root }}
+          archive_output: true
+
+      - name: create release
+        if: inputs.github-upload && !env.ACT
+        uses: ncipollo/release-action@v1.20.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generateReleaseNotes: true
+          tag: ${{ env.version }}
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          artifacts: ${{ steps.export.outputs.archive_directory }}/*
+
+      - name: setup butler
+        if: inputs.itch-upload && env.itch-game != '' && !env.ACT
+        uses: remarkablegames/setup-butler@v2
+        with:
+          butler-version: LATEST
+
+      - name: upload to itch
+        if: inputs.itch-upload && env.itch-game != '' && !env.ACT
+        run: |
+          let info = (ls ${{steps.export.outputs.archive_directory}}
+            | each { |f|
+              let channel = match ($f.name | path basename) {
+                  $n if ($n | str contains -i "linux") => "linux",
+                  $n if ($n | str contains -i "windows") => "windows",
+                  $n if ($n | str contains -i "macos") => "osx",
+                  $n if ($n | str contains -i "android") => "android",
+                  $n if ($n | str contains -i "web") => "web",
+                  _ => "other"
+              }
+              {
+                file: $f.name,
+                channel: $channel
+              }
+            })
+
+          for i in $info {
+            ^butler push --fix-permissions --userversion=$"($env.version)" $i.file $"($env.itch-user)/($env.itch-game):($i.channel)"
+          }
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
