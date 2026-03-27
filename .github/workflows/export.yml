@@ -48,7 +48,16 @@ jobs:
             | get 1
             | str trim -c '"')
 
-          $"version=($version)" | save -a $env.GITHUB_ENV
+          let android = (open ($env.project-godot-root | path join "export_presets.cfg")
+            | lines
+            | where ($it | str contains -i 'android')
+            | is-not-empty)
+
+          $"version=($version)
+          android-export=($android)" | save -a $env.GITHUB_ENV
+
+      - uses: android-actions/setup-android@v3
+        if: env.android-export == 'true'
 
       - name: export game
         if: inputs.github-upload || inputs.itch-upload
