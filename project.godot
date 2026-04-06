@@ -20,6 +20,16 @@ gdscript/warnings/untyped_declaration=1
 gdscript/warnings/unsafe_property_access=1
 gdscript/warnings/unsafe_method_access=1
 
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+
+[global_group]
+
+slots=""
+hand=""
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

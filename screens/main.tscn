@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://gcj8xlcl7iwr"]
+
+[ext_resource type="PackedScene" uid="uid://ca0jox5rap321" path="res://screens/slot.tscn" id="1_wtj3h"]
+[ext_resource type="PackedScene" uid="uid://1cctsk3ylxpm" path="res://screens/card.tscn" id="2_0vcwn"]
+[ext_resource type="Texture2D" uid="uid://b230axvdhc868" path="res://images/placeholder/Carta 1.png" id="3_6flog"]
+[ext_resource type="Texture2D" uid="uid://865ylylipkun" path="res://images/placeholder/Carta 2.png" id="4_6b72x"]
+[ext_resource type="Texture2D" uid="uid://7q28bkcsvxxo" path="res://images/placeholder/Carta 3.png" id="5_ycjph"]
+[ext_resource type="Texture2D" uid="uid://vase2n5lk6ol" path="res://images/placeholder/Carta 4.png" id="6_ramac"]
+[ext_resource type="Texture2D" uid="uid://c7r8q2p1463n5" path="res://images/placeholder/Carta 5.png" id="7_nrb37"]
+[ext_resource type="Texture2D" uid="uid://b2f8msins6617" path="res://images/placeholder/Carta 6.png" id="8_owlgm"]
+[ext_resource type="Texture2D" uid="uid://f80hwng5kjmf" path="res://images/placeholder/Carta 7.png" id="9_xd12c"]
+
+[node name="Main" type="Control" unique_id=337471093]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1278.0
+offset_bottom = 722.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1559741273]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="SlotsContainer" type="GridContainer" parent="VBoxContainer" unique_id=855872234]
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 50
+columns = 3
+
+[node name="Slot1" parent="VBoxContainer/SlotsContainer" unique_id=1861150412 instance=ExtResource("1_wtj3h")]
+layout_mode = 2
+
+[node name="Slot2" parent="VBoxContainer/SlotsContainer" unique_id=787833705 instance=ExtResource("1_wtj3h")]
+layout_mode = 2
+
+[node name="Slot3" parent="VBoxContainer/SlotsContainer" unique_id=1902144854 instance=ExtResource("1_wtj3h")]
+layout_mode = 2
+
+[node name="Slot4" parent="VBoxContainer/SlotsContainer" unique_id=1143099795 instance=ExtResource("1_wtj3h")]
+layout_mode = 2
+
+[node name="Slot5" parent="VBoxContainer/SlotsContainer" unique_id=1927178248 instance=ExtResource("1_wtj3h")]
+layout_mode = 2
+
+[node name="Slot6" parent="VBoxContainer/SlotsContainer" unique_id=872846408 instance=ExtResource("1_wtj3h")]
+layout_mode = 2
+
+[node name="Hand" type="HBoxContainer" parent="VBoxContainer" unique_id=1694061183 groups=["hand"]]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+alignment = 1
+
+[node name="Card1" parent="VBoxContainer/Hand" unique_id=1009160823 instance=ExtResource("2_0vcwn")]
+layout_mode = 2
+texture = ExtResource("3_6flog")
+
+[node name="Card2" parent="VBoxContainer/Hand" unique_id=1821536406 instance=ExtResource("2_0vcwn")]
+layout_mode = 2
+texture = ExtResource("4_6b72x")
+
+[node name="Card3" parent="VBoxContainer/Hand" unique_id=275910184 instance=ExtResource("2_0vcwn")]
+layout_mode = 2
+texture = ExtResource("5_ycjph")
+
+[node name="Card4" parent="VBoxContainer/Hand" unique_id=98015962 instance=ExtResource("2_0vcwn")]
+layout_mode = 2
+texture = ExtResource("6_ramac")
+
+[node name="Card5" parent="VBoxContainer/Hand" unique_id=1902618148 instance=ExtResource("2_0vcwn")]
+layout_mode = 2
+texture = ExtResource("7_nrb37")
+
+[node name="Card6" parent="VBoxContainer/Hand" unique_id=193047743 instance=ExtResource("2_0vcwn")]
+layout_mode = 2
+texture = ExtResource("8_owlgm")
+
+[node name="Card7" parent="VBoxContainer/Hand" unique_id=1393023323 instance=ExtResource("2_0vcwn")]
+layout_mode = 2
+texture = ExtResource("9_xd12c")

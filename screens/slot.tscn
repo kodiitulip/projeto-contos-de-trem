@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ca0jox5rap321"]
+
+[ext_resource type="Script" uid="uid://ufbx2koqliyb" path="res://scripts/slot.gd" id="1_fbqc7"]
+[ext_resource type="Texture2D" uid="uid://bkwu76gqnmuom" path="res://images/placeholder/Slot.png" id="1_h5hx6"]
+
+[node name="Slot" type="Panel" unique_id=1861150412 groups=["slots"]]
+custom_minimum_size = Vector2(127, 200)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_fbqc7")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1733420886]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_h5hx6")
